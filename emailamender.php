@@ -4,6 +4,8 @@ require_once 'emailamender.civix.php';
 
 /**
  * Implementation of hook_civicrm_config
+ *
+ * @param \CRM_Core_Config $config
  */
 function emailamender_civicrm_config(&$config) {
   _emailamender_civix_civicrm_config($config);
@@ -25,7 +27,7 @@ function emailamender_civicrm_xmlMenu(&$files) {
  */
 function emailamender_create_activity_type_if_doesnt_exist($sActivityTypeLabel, $sActivityTypeDescription, $sSettingName) {
 
-  $aActivityTypeCheck = civicrm_api("OptionValue", "get", ['version' => '3', 'sequential' => '1', 'name' => $sActivityTypeLabel]);
+  $aActivityTypeCheck = civicrm_api('OptionValue', 'get', ['version' => '3', 'sequential' => '1', 'name' => $sActivityTypeLabel]);
 
   if ($aActivityTypeCheck['count'] > 0) {
     CRM_Core_BAO_Setting::setItem(
@@ -214,11 +216,11 @@ function emailamender_reassemble_email($aEmailPieces, $aDomainPartPieces) {
 function emailamender_civicrm_post($op, $objectName, $id, &$params) {
 
   // 1. ignore all operations other than adding an email address
-  if ($objectName != "Email") {
+  if ($objectName !== 'Email') {
     return;
   }
 
-  if ($op != "create") {
+  if ($op !== 'create') {
     return;
   }
 
